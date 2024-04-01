@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Drone Detection</title>
+	<style type="text/css">
+		body{
+			background-color: #F5F5F5;
+			font-family: Arial, sans-serif;
+			margin: 0;
+			padding: 0;
+		}
+		.data-container{
+			display: flex;
+			justify-content: space-between;
+			width: 50%;
+			margin: 50px auto;
+			padding: 20px;
+			background-color: #FFF;
+			box-shadow: 0 2px 20px rgba(0, 0, 0,0.1);
+			border-radius: 10px;
+		}
+
+		.data-item{
+			text-align: center;
+		}
+
+		.data-item h2{
+			font-size: 24px;
+			font-weight: bold;
+			margin-bottom: 10px;
+		}
+
+		.data-item p{
+			font-size: 48px;
+			font-weight: bold;
+			color: #6EB7FF;
+		}
+
+		.data-head{
+			margin: auto;
+			width: 50%;
+			text-align: center;
+			font-size: 45px;
+			font-weight: bold;
+			margin: 50px auto;
+			padding: 20px;
+			background-color: #FFF;
+			box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+			border-radius: 20px;
+
+
+		}
+
+
+
+	</style>
+</head>
+<body>
+
+	<div class="data-head">Distance, Position Realtime Readings</div>
+
+	<div class="data-container">
+		<div class="data-item">
+			<h2>Position</h2>
+			<p class="value" id="position">22 &#8451;</p>
+		</div>
+		<div class="data-item">
+			<h2>Distance</h2>
+			<p class="value" id="distance">10m</p>
+		</div>
+		<div class="data-item">
+			<h2>Speed</h2>
+			<p class="value" id="speed">10K/h</p>
+		</div>
+		
+	</div>
+
+	<!-- the scripts for products you want to access must be added-->
+
+	<script type="module">
+    	import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js'
+
+    	// If you enabled Analytics in your project, add the Firebase SDK for Google Analytics
+    	import { getAnalytics } from 'https://www.gstatic.com/firebasejs/10.8.1/firebase-analytics.js'
+		import { getDatabase, ref, set, get, child, onValue } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-database.js";
+    	// Add Firebase products that you want to use
+    	import { getAuth } from 'https://www.gstatic.com/firebasejs/10.8.1/firebase-auth.js'
+    	import { getFirestore } from 'https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js'
+  	   // TODO: Add SDKs for Firebase products that you want to use
+  	   // https://firebase.google.com/docs/web/setup#available-libraries
+ 	   // Your web app's Firebase configuration
+	    const firebaseConfig = {
+  	   'apiKey': "AIzaSyC__dh9c__4vWR5bMz8NgIhpmP7bcNi0hs",
+ 	   'authDomain': "drone-detection-41937.firebaseapp.com",
+	   'databaseURL': "https://drone-detection-41937-default-rtdb.asia-southeast1.firebasedatabase.app",
+	   'projectId': "drone-detection-41937",
+	   'storageBucket': "drone-detection-41937.appspot.com",
+	   'messagingSenderId': "546181026940",
+	   'appId': "1:546181026940:web:ba3fc73abf23334c1165f9"
+	  };
+
+
+	  // Initialize Firebase
+	  const app = initializeApp(firebaseConfig);
+
+	  // getting reference to the database
+	  const database = getDatabase(app);
+
+	  //getting reference to the data we want
+	  const dataRef1 = ref(database,'results/results');
+	  const dataRef2 = ref(database,'results/results');
+
+	  //fetch the data
+	  	onValue(dataRef1, (snapshot) => {
+		  if (snapshot.exists()) {
+    		const tposition = snapshot.val();
+    		document.getElementById('position').textContent = `${tposition} `;}
+  			else {
+    			console.log("No data available");
+  			}
+		});
+
+		onValue(dataRef2, (snapshot) => {
+  			if (snapshot.exists()) {
+    	const tdistance = snapshot.val();
+    	document.getElementById('distance').textContent = `${tdistance} m`;}
+  			else {
+    			console.log("No data available");
+  			}
+		});
+		onValue(dataRef2, (snapshot) => {
+  			if (snapshot.exists()) {
+    	const tspeed = snapshot.val();
+    	document.getElementById('speed').textContent = `${tspeed} K/h`;}
+  			else {
+    			console.log("No data available");
+  			}
+		});
+
+	</script>
+
+</body>
+</html>
